@@ -7,6 +7,9 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import './App.css';
 import TeamMembers from './TeamMembers';
+import Shuffle from "./animate/Shuffle";
+import TextType from "./animate/TextType";
+import TargetCursor from "./animate/TargetCursor";
 
 
 function App() {
@@ -246,7 +249,7 @@ function App() {
       <div className="App">
         <nav className="main-nav">
           <button
-            className="nav-btn"
+            className="nav-btn cursor-target"
             onClick={() => setCurrentPage('app')}
           >
             ← Back to App
@@ -261,15 +264,36 @@ function App() {
     <div className="App">
       <nav className="main-nav">
         <button
-          className="nav-btn team-nav-btn"
+          className="nav-btn team-nav-btn cursor-target"
           onClick={() => setCurrentPage('team')}
         >
-          👥 Team Members
+          Team Members
         </button>
       </nav>
       <header className="app-header">
-        <h1> ✍️ AI Hand Written Digit Recognition </h1>
-        <p>Draw a digit or upload an image and let AI recognize it!</p>
+        {/* <h1> ✍️ AI Hand Written Digit Recognition </h1> */}
+        <Shuffle
+          text="AI Hand-Written Digit Recognition"
+          shuffleDirection="right"
+          duration={4.0}
+          animationMode="evenodd"
+          shuffleTimes={1}
+          ease="power3.out"
+          stagger={0.03}
+          threshold={0.1}
+          triggerOnce={true}
+          triggerOnHover={true}
+          respectReducedMotion={true}
+        />
+        <p>
+          <TextType
+            text={["Draw a digit or upload an image", "let AI recognize it!"]}
+            typingSpeed={75}
+            pauseDuration={1500}
+            showCursor={true}
+            cursorCharacter="|"
+          />
+        </p>
         <div className={`api-status ${apiStatus}`}>
           {apiStatus === 'connected' && '✓ AI Model Connected'}
           {apiStatus === 'disconnected' && 'x Backend Disconnected'}
@@ -278,15 +302,21 @@ function App() {
         </div>
       </header>
       <div className="mode-selector">
-        <button className={`mode-btn ${mode === 'draw' ? 'active' : ''}`}
+        <TargetCursor
+          spinDuration={2}
+          hideDefaultCursor={true}
+          parallaxOn={true}
+        />
+        <button className={`cursor-target mode-btn ${mode === 'draw' ? 'active' : ''}`}
           onClick={() => switchMode('draw')}
         >
-          ✍️ Draw Digit
+          Draw Digit
         </button>
-        <button className={`mode-btn ${mode === 'upload' ? 'active' : ''}`}
+
+        <button className={`cursor-target mode-btn  ${mode === 'upload' ? 'active' : ''}`}
           onClick={() => switchMode('upload')}
         >
-          📁 Upload Image
+          Upload Image
         </button>
       </div>
       {/* Main Content */}
@@ -295,7 +325,7 @@ function App() {
         <div className="whiteboard-section">
           <div className="whiteboard-header">
             <h2>
-              {mode === 'draw' ? ' 📝 Draw Your Digit Here' : ' 📸 upload Digit Image'}
+              {mode === 'draw' ? 'Draw Your Digit Here' : 'upload Digit Image'}
             </h2>
             {mode === 'draw' && (
               <div className="whiteboard-controls">
@@ -345,23 +375,23 @@ function App() {
               <button className="btn btn-upload"
                 onClick={triggerFileUpload}
               >
-                📁 Choose Image File
+                Choose Image File
               </button>
             )}
-            <button className="btn btn-predict"
+            <button className="btn btn-predict cursor-target"
               onClick={predictDigit}
               disabled={loading || apiStatus !== 'connected' || (mode === 'draw' && strokeCount === 0 && !uploadedImage)}
             >
               {loading ? (
                 <> 🔄Recognizing...</>
               ) : (
-                <>🎯 Recognize Digit </>
+                <>Recognize Digit</>
               )}
             </button>
-            <button className="btn btn-clear"
+            <button className="btn btn-clear cursor-target"
               onClick={clearCanvas}
             >
-              🗑️ Clear
+              Clear
             </button>
           </div>
 
@@ -413,75 +443,75 @@ function App() {
                 <div className="meter-label">AI Certainty Level</div>
                 <div className="meter-bar-container">
                   <div className={`meter-bar ${prediction.confidence >= 90 ? 'high' :
-                      prediction.confidence > 70 ? 'medium' : 'low'
+                    prediction.confidence > 70 ? 'medium' : 'low'
                     }`}
                     style={{ width: `${prediction.confidence}%` }}
                   >
                     <span className="meter-text">{prediction.confidence.toFixed(1)}%</span>
                   </div>
                 </div>
-              <div className="meter-scale">
-                <span>0%</span>
-                <span>50%</span>
-                <span>100%</span>
-              </div>
+                <div className="meter-scale">
+                  <span>0%</span>
+                  <span>50%</span>
+                  <span>100%</span>
+                </div>
               </div>
               <div className="all-probabilites">
                 <h3>📊 Probability Distribution</h3>
-                <div className="probability-list"> 
+                <div className="probability-list">
                   {Object.entries(prediction.all_probabilities)
-                  .sort((a,b) => b[1] - a[1])
-                  .map(([digit,prob]) =>(
-                    <div 
-                    key={digit}
-                    className={`probability-row ${digit === String(prediction.digit) ? 'top-prediction' : ''}`}
-                    >
-                      <div className="prob-digit">{digit}</div>
-                      <div className="prob-bar-wrapper">
-                        <div className={`prob-bar ${digit === String(prediction.digit) ? 'primary' : 'secondary'}`}
-                        style={{
-                          width: `${prob}%`,
-                          transition : 'width 0.8s ease-out'
-                        }}
-                        >
-                          {prob > 5 && (
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([digit, prob]) => (
+                      <div
+                        key={digit}
+                        className={`probability-row ${digit === String(prediction.digit) ? 'top-prediction' : ''}`}
+                      >
+                        <div className="prob-digit">{digit}</div>
+                        <div className="prob-bar-wrapper">
+                          <div className={`prob-bar ${digit === String(prediction.digit) ? 'primary' : 'secondary'}`}
+                            style={{
+                              width: `${prob}%`,
+                              transition: 'width 0.8s ease-out'
+                            }}
+                          >
+                            {prob > 5 && (
                               <span className="prob-bar-label">{prob.toFixed(1)}%</span>
                             )}
-                        </div>  
+                          </div>
+                        </div>
+                        <div className="prob-percentage">{prob.toFixed(1)}%</div>
                       </div>
-                      <div className="prob-percentage">{prob.toFixed(1)}%</div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
               <div className="ai-insights">
-                  <h4>AI insights</h4>
-                  <div className="insight-tags"> 
-                    {prediction.confidence >=95 && (
-                      <span className="tag tag-excellent">Excellent Recognition</span>
-                    )}
-                    {prediction.confidence >=85  && prediction.confidence <95 && (
-                      <span className="tag tag-good">Good Recognition</span>
-                    )}
-                    {prediction.confidence <85 && (
-                      <span className="tag tag-certain">Uncertain - Try again</span>
-                    )}
+                <h4>AI insights</h4>
+                <div className="insight-tags">
+                  {prediction.confidence >= 95 && (
+                    <span className="tag tag-excellent">Excellent Recognition</span>
+                  )}
+                  {prediction.confidence >= 85 && prediction.confidence < 95 && (
+                    <span className="tag tag-good">Good Recognition</span>
+                  )}
+                  {prediction.confidence < 85 && (
+                    <span className="tag tag-certain">Uncertain - Try again</span>
+                  )}
 
-                    {(() => {
-                      const sorted = Object.entries(prediction.all_probabilities)
-                        .sort((a,b) => b[1] - a[1]);
-                      const secondBest = sorted[1];
-                      if (secondBest && secondBest[1] > 10 ){
-                        return (
-                          <span className="tag tag-altenative">
+                  {(() => {
+                    const sorted = Object.entries(prediction.all_probabilities)
+                      .sort((a, b) => b[1] - a[1]);
+                    const secondBest = sorted[1];
+                    if (secondBest && secondBest[1] > 10) {
+                      return (
+                        <span className="tag tag-altenative">
                           Could also be: {secondBest[0]} ({secondBest[1].toFixed(1)}%)
-                          </span>
-                        );
-                      }
-                    }) ()}
-                  </div>
+                        </span>
+                      );
+                    }
+                  })()}
+                </div>
               </div>
-            </div>   
+            </div>
           )}
         </div>
       </div>
@@ -492,29 +522,29 @@ function App() {
           <div className="instruction-item">
             <div className="instruction-number">1</div>
             <div className="instruction-text">
-                <strong>Choose Mode</strong>
-                <p>Select "Draw Digit" or "Upload Image"</p>
+              <strong>Choose Mode</strong>
+              <p>Select "Draw Digit" or "Upload Image"</p>
             </div>
           </div>
           <div className="instruction-item">
             <div className="instruction-number">2</div>
             <div className="instruction-text">
-                <strong>Input Digit</strong>
-                <p>Draw with mouse/finger OR upload an image</p>
+              <strong>Input Digit</strong>
+              <p>Draw with mouse/finger OR upload an image</p>
             </div>
           </div>
           <div className="instruction-item">
             <div className="instruction-number">3</div>
             <div className="instruction-text">
-                <strong>Recognize</strong>
-                <p>DClick "Recognize Digit" to get AI prediction</p>
+              <strong>Recognize</strong>
+              <p>DClick "Recognize Digit" to get AI prediction</p>
             </div>
           </div>
           <div className="instruction-item">
             <div className="instruction-number">4</div>
             <div className="instruction-text">
-                <strong>View Results</strong>
-                <p>See prediction with confidence and probabilities</p>
+              <strong>View Results</strong>
+              <p>See prediction with confidence and probabilities</p>
             </div>
           </div>
         </div>
@@ -544,7 +574,7 @@ function App() {
       </div>
       <footer className="app-footer">
         <div className="footer-content">
-          <p><strong>Handwritten Digit Recognition AI</strong></p>
+          <p><strong>Hand-written Digit Recognition AI</strong></p>
           <p>Created by Big Daddies | AI Project Project 2024</p>
           <p>Powered by TensorFlow CNN & React</p>
         </div>
