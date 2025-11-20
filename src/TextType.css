@@ -1,0 +1,36 @@
+.text-type {
+  display: inline-block;
+  white-space: pre-wrap;
+  font-size: 1.5rem;
+  font-family: 'Fira Code', monospace;
+}
+
+.text-type__cursor {
+  margin-left: 0.25rem;
+  display: inline-block;
+  opacity: 1;
+}
+
+.text-type__cursor--hidden {
+  display: none;
+}
+
+/* Team header text styling with gradient purple */
+.team-header-text {
+  font-weight: bold;
+  font-size: 2.8rem;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  margin-bottom: 2rem;
+}
+
+.team-header-text .text-type__content {
+  background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+}
+
+.team-header-text .text-type__cursor {
+  color: #764ba2;
+}
