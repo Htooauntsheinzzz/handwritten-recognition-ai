@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     checkAPIHealth();
-  }, []);
+  },);
 
   const checkAPIHealth = async () => {
     try {
