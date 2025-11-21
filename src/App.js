@@ -372,7 +372,7 @@ function App() {
           />
           <div className="whiteboard-buttons">
             {mode === 'upload' && (
-              <button className="btn btn-upload"
+              <button className="btn btn-upload cursor-target"
                 onClick={triggerFileUpload}
               >
                 Choose Image File
