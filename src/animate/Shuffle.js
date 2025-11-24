@@ -118,8 +118,8 @@ const Shuffle = ({
           const parent = ch.parentElement;
           if (!parent) return;
 
-          const w = ch.getBoundingClientRect().width;
-          if (!w) return;
+          const w = ch.getBoundingClientRect().width || ch.offsetWidth || 20;
+          if (w <= 0) return;
 
           const wrap = document.createElement('span');
           Object.assign(wrap.style, {

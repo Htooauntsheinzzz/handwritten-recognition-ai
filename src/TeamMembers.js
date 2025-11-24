@@ -25,9 +25,9 @@ function TeamMembers() {
       role: "Data Analyst",
       description: "Collect and preprocess the MNIST dataset for model training and evaluation.",
       photo: kyawPhoto,
-      github: "https://github.com/kyawzawhein",
-      linkedin: "https://linkedin.com/in/kyawzawhein",
-      email: "kyaw@example.com"
+      github: "https://github.com/kz-hein",
+      linkedin: "https://linkedin.com/",
+      email: "kzheinkm35@gmail.com"
     },
     {
       id: 3,
@@ -37,7 +37,7 @@ function TeamMembers() {
       photo: minPhoto,
       github: "https://github.com/minpyaesone",
       linkedin: "https://linkedin.com/in/minpyaesone",
-      email: "min@example.com"
+      email: "thusinlay1232@gmail.com"
     }
   ];
 
