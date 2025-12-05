@@ -11,7 +11,7 @@ function TeamMembers() {
   const teamMembers = [
     {
       id: 1,
-      name: "Shein",
+      name: "Htoo Aunt Shein",
       role: "Full Stack Developer",
       description: "Responsible for developing and training the CNN model for digit recognition.",
       photo: sheinPhoto,

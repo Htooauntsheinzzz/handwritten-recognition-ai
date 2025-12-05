@@ -287,6 +287,7 @@ function App() {
         />
         <p>
           <TextType
+            as="span"
             text={["Draw a digit or upload an image", "let AI recognize it!"]}
             typingSpeed={75}
             pauseDuration={1500}
